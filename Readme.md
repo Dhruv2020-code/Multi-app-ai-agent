@@ -35,8 +35,7 @@ To prevent hallucinated code or unsafe pushes from impacting main production bra
 
 ## 🎥 2-Minute Demo Video
 
-[![Watch the Demo](https://img.shields.io/badge/Demo_Video-Watch_Now-red?style=for-the-badge&logo=youtube)](YOUR_DEMO_VIDEO_URL_HERE)
-
+https://youtu.be/u7PVoVAVC0g?si=CTHSTvLlGboQ_5oe
 > Click the link above to watch the 2-minute end-to-end incident remediation demo.
 
 ---
