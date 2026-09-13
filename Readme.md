@@ -57,18 +57,18 @@ cd Multi-app-ai-agent
 pip install -r requirements.txt
 
 Create a .env file in the project root:
+
 GOOGLE_API_KEY=your_gemini_api_key
 GITHUB_TOKEN=your_github_personal_access_token
 SLACK_WEBHOOK_URL=your_slack_incoming_webhook_url
 
-Run the Dashboard:
+// 3.)Run the Dashboard:
 streamlit run dashboard.py
 
-### Push Command
+// 4.)Running the Webhook Server:
+python server.py
 
-Run these commands in your terminal to update your repository immediately:
+// 5.)Running the Agent Directly
+python agent.py
 
-```powershell
-git add README.md
-git commit -m "docs: update professional submission README"
-git push origin main
+
