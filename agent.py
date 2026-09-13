@@ -73,7 +73,6 @@ def create_github_pr():
     
     try:
         g = Github(github_token)
-        # IMPORTANT: Replace with your actual GitHub username and repository name
         repo = g.get_repo("Dhruv2020-code/Multi-app-ai-agent")
         
         # Create a new branch
@@ -106,9 +105,10 @@ def create_github_pr():
         return pr.html_url
     except Exception as e:
         print(f"❌ GitHub PR Failed: {e}")
-        return "https://github.com/error-creating-pr"
+        return "https://github.com/Dhruv2020-code/Multi-app-ai-agent/pulls"
 
-def start_agent_loop(max_retries=3):
+def run_agent_loop(max_retries=3):
+    """Main execution function called by Dashboard and Webhook."""
     print("🤖 Gemini AI Remediation Agent Loop Started...\n" + "="*50)
     
     for attempt in range(1, max_retries + 1):
@@ -119,13 +119,16 @@ def start_agent_loop(max_retries=3):
             pr_url = create_github_pr()
             send_slack_notification(pr_url, attempt)
             print("="*50 + "\n🎉 Incident lifecycle completed autonomously.")
-            return True
+            return pr_url
         
         print(f"❌ Test Failed (Attempt {attempt}/{max_retries}). Generating patch...")
         fix_code_with_llm(logs)
         
     print("\n❌ Max retry limit reached.")
-    return False
+    return None
+
+# Backward compatibility alias
+start_agent_loop = run_agent_loop
 
 if __name__ == "__main__":
-    start_agent_loop()
+    run_agent_loop()

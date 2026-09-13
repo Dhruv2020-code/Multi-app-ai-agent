@@ -1,19 +1,27 @@
-from flask import Flask, jsonify
-import threading
-from agent import start_agent_loop
+from flask import Flask, render_template, jsonify
+import agent
 
 app = Flask(__name__)
 
+@app.route('/')
+def home():
+    # Renders the UI dashboard
+    return render_template('index.html')
+
 @app.route('/sentry-webhook', methods=['POST'])
-def sentry_trigger():
-    print("🚨 [Sentry] New Crash Detected! Triggering AI Agent...")
-    
-    # Run agent in the background
-    thread = threading.Thread(target=start_agent_loop)
-    thread.start()
-    
-    return jsonify({"status": "received", "message": "AI Agent deployed to fix the bug"}), 200
+def sentry_webhook():
+    print("\n🚨 [Sentry] New Crash Detected! Triggering AI Agent...")
+    try:
+        # Run agent lifecycle
+        pr_url = agent.run_agent_loop()
+        return jsonify({
+            "status": "success",
+            "message": "Remediation complete",
+            "pr_url": pr_url or "https://github.com/Dhruv2020-code/Multi-app-ai-agent/pulls"
+        }), 200
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == '__main__':
-    print("🌐 Webhook server running on port 5000. Listening for Sentry alerts...")
-    app.run(port=5000)
+    print("🌐 Webhook & Dashboard Server running on http://127.0.0.1:5000")
+    app.run(port=5000, debug=True)
